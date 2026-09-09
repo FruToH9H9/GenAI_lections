@@ -29,7 +29,7 @@ jobs:
 
       - name: Запуск тестов и расчёт покрытия
         run: |
-          pytest -v test_xml_parser_tool.py \
+          pytest -v test.py \
             --junitxml=test-results.xml \
             --cov=xml_parser_tool \
             --cov-report=term
