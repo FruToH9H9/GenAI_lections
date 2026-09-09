@@ -8,7 +8,7 @@ on:
 
 permissions:
   contents: write
-
+  checks: write
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,7 +29,18 @@ jobs:
 
       - name: Запуск тестов и расчёт покрытия
         run: |
-          pytest -v test.py --cov=xml_parser_tool --cov-report=term
+          pytest -v test_xml_parser_tool.py \
+            --junitxml=test-results.xml \
+            --cov=xml_parser_tool \
+            --cov-report=term
+
+      - name: Публикация результатов тестов
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: Результаты unit-тестов XMLParserTool
+          path: test-results.xml
+          reporter: java-junit
 
       - name: Создание SVG-бейджа покрытия
         if: github.event_name == 'push'
